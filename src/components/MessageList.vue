@@ -31,17 +31,23 @@ const fetchMessages = async () => {
   await messageStore.list();
 };
 
-onMounted(async () => {
-  await fetchMessages();
+const scrollList = () => {
+  list.value.scrollTo({ top: list.value.scrollHeight, behavior: "smooth" });
+};
 
+const subscribeToChannel = () => {
   pusherService.subscribe("private-messages").bind("App\\Events\\SendMessageEvent", (event) => {
     messageStore.messages = [...messageStore.messages, event.message];
 
-    list.value.scrollTo({ top: list.value.scrollHeight, behavior: "smooth" });
+    scrollList();
   });
+};
 
-  setTimeout(() => {
-    list.value.scrollTo({ top: list.value.scrollHeight, behavior: "smooth" });
-  }, 500);
+onMounted(async () => {
+  subscribeToChannel();
+
+  await fetchMessages();
+
+  scrollList();
 });
 </script>
