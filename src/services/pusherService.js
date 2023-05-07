@@ -13,7 +13,6 @@ const pusherService = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
   enabledTransports: ["ws", "wss"],
   channelAuthorization: {
     endpoint: `${import.meta.env.VITE_API_URL}/broadcasting/auth`,
-    transport: "ajax",
     headers: {
       Authorization: `Bearer ${authStore.token}`,
     },
