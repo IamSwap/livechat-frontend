@@ -1,34 +1,21 @@
 import { defineStore } from "pinia";
-import AuthService from "@/services/authService";
+import MessageService from "@/services/messageService";
 
-const useAuthStore = defineStore("message", {
+const useMessageStore = defineStore("message", {
   state: () => ({
-    messages: "",
+    messages: [],
   }),
 
   actions: {
     async send(data) {
-      try {
-        const res = await AuthService.login(data);
-        this.token = res.data.token;
-
-        await this.fetchUser();
-      } catch (error) {
-        return error;
-      }
+      await MessageService.send(data);
     },
 
-    async index(data) {
-      try {
-        const res = await AuthService.login(data);
-        this.token = res.data.token;
-
-        await this.fetchUser();
-      } catch (error) {
-        return error;
-      }
+    async list() {
+      const res = await MessageService.list();
+      this.messages = res.data.data;
     },
   },
 });
 
-export default useAuthStore;
+export default useMessageStore;
